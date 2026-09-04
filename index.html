@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ISS TRACKER</title>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+  <div id="canvas-container"></div>
+
+  <header id="header">
+    <div class="header-left">
+      <h1>ISS TRACKER</h1>
+      <p class="subtitle">Know when the International Space Station will pass over you.</p>
+    </div>
+    <div class="header-right">
+      <span id="status-indicator" class="status live">● LIVE</span>
+      <span id="last-update">LAST ORBIT UPDATE: --:--:-- UTC</span>
+    </div>
+  </header>
+
+  <div id="left-panel" class="panel">
+    <div class="panel-section">
+      <h2>OBSERVER LOCATION</h2>
+      <div class="input-group">
+        <label>LATITUDE</label>
+        <input type="number" id="lat-input" placeholder="27.7172" min="-90" max="90" step="0.0001">
+      </div>
+      <div class="input-group">
+        <label>LONGITUDE</label>
+        <input type="number" id="lon-input" placeholder="85.3240" min="-180" max="180" step="0.0001">
+      </div>
+      <button id="btn-track" class="btn-primary">TRACK MY LOCATION</button>
+      <button id="btn-geolocation" class="btn-secondary">📍 USE MY LOCATION</button>
+    </div>
+
+    <div class="panel-section">
+      <h2>ISS POSITION</h2>
+      <div class="data-row"><span>Latitude</span><span id="iss-lat">--</span></div>
+      <div class="data-row"><span>Longitude</span><span id="iss-lon">--</span></div>
+      <div class="data-row"><span>Altitude</span><span id="iss-alt">--</span></div>
+      <div class="data-row"><span>Velocity</span><span id="iss-vel">--</span></div>
+    </div>
+
+    <div class="panel-section">
+      <h2>CAMERA</h2>
+      <div class="btn-row">
+        <button id="btn-reset" class="btn-small">RESET VIEW</button>
+        <button id="btn-focus-iss" class="btn-small">FOCUS ISS</button>
+      </div>
+      <div class="btn-row">
+        <button id="btn-focus-loc" class="btn-small">FOCUS LOCATION</button>
+        <button id="btn-toggle-orbit" class="btn-small">HIDE ORBIT</button>
+      </div>
+    </div>
+
+    <div class="panel-section collapsible">
+      <h2 class="collapsible-header">⚙ SETTINGS</h2>
+      <div class="collapsible-content">
+        <div class="setting-row">
+          <label>Min Elevation</label>
+          <select id="setting-min-elev">
+            <option value="5">5°</option>
+            <option value="10" selected>10°</option>
+            <option value="15">15°</option>
+            <option value="20">20°</option>
+          </select>
+        </div>
+        <div class="setting-row">
+          <label>Units</label>
+          <select id="setting-units">
+            <option value="km">Kilometers</option>
+            <option value="mi">Miles</option>
+          </select>
+        </div>
+        <div class="setting-row">
+          <label>Time Format</label>
+          <select id="setting-time">
+            <option value="24">24h</option>
+            <option value="12">12h</option>
+          </select>
+        </div>
+        <div class="setting-row">
+          <label>Auto Rotate</label>
+          <input type="checkbox" id="setting-autorotate" checked>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="right-panel" class="panel">
+    <div class="panel-section" id="countdown-section">
+      <h2>NEXT VISIBLE PASS</h2>
+      <div id="countdown-display" class="countdown">--:--:--</div>
+      <div id="countdown-label">Enter coordinates to begin</div>
+    </div>
+
+    <div class="panel-section" id="pass-detail" style="display:none;">
+      <h2>PASS DETAIL</h2>
+      <div id="pass-detail-content"></div>
+      <canvas id="sky-path-canvas" width="300" height="300"></canvas>
+      <button id="btn-close-detail" class="btn-small" style="margin-top:8px;width:100%">CLOSE</button>
+    </div>
+  </div>
+
+  <div id="bottom-panel" class="panel">
+    <h2>UPCOMING ISS PASSES</h2>
+    <div id="passes-list">
+      <div class="pass-card" style="opacity:0.5">Enter your coordinates above to calculate upcoming passes.</div>
+    </div>
+    <p class="disclaimer">Visibility is an estimate based on orbital and solar geometry. Local weather, light pollution, atmospheric conditions, and exact orbital updates can affect actual visibility.</p>
+  </div>
+
+  <div id="legend">
+    <span class="legend-item"><span class="dot iss-dot"></span> ISS</span>
+    <span class="legend-item"><span class="line orbit-line"></span> Orbit</span>
+    <span class="legend-item"><span class="dot observer-dot"></span> Observer</span>
+  </div>
+
+  <div id="error-toast" class="toast hidden"></div>
+
+  <div id="loading-overlay">
+    <div class="loader"></div>
+    <p>INITIALIZING ISS TRACKER...</p>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
