@@ -1,5 +1,6 @@
 import { findPasses, formatDuration, azimuthToCompass, setMinElevation } from './passes.js';
 import { getLookAngles } from './iss.js';
+import { API_BASE } from './config.js';
 
 let observerLat = null;
 let observerLon = null;
@@ -142,7 +143,7 @@ async function calculateAndDisplayPasses() {
   // 1. First try Skyfield Python backend
   try {
     const minElev = settings.minElevation || 10;
-    const url = `http://localhost:5000/api/passes?lat=${observerLat}&lon=${observerLon}&min_elev=${minElev}&days=3`;
+    const url = `${API_BASE}/api/passes?lat=${observerLat}&lon=${observerLon}&min_elev=${minElev}&days=3`;
     const res = await fetch(url, { signal: AbortSignal.timeout(3000) });
     if (res.ok) {
       const data = await res.json();

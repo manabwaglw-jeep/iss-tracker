@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import * as satellite from 'satellite.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { API_BASE } from './config.js';
 
 const EARTH_RADIUS_KM = 6371;
 const EARTH_RADIUS_SCENE = 5;
@@ -18,7 +19,7 @@ const TLE_FETCH_INTERVAL = 1800000;
 
 export async function fetchTLE() {
   try {
-    const res = await fetch('http://localhost:5000/api/tle', { signal: AbortSignal.timeout(1500) });
+    const res = await fetch(`${API_BASE}/api/tle`, { signal: AbortSignal.timeout(1500) });
     if (res.ok) {
       const data = await res.json();
       if (data.line1 && data.line2) {
@@ -65,7 +66,7 @@ export async function fetchTLE() {
 
 export async function fetchLiveBackendPosition() {
   try {
-    const res = await fetch('http://localhost:5000/api/position', { signal: AbortSignal.timeout(1200) });
+    const res = await fetch(`${API_BASE}/api/position`, { signal: AbortSignal.timeout(1200) });
     if (res.ok) {
       const data = await res.json();
       const scenePos = latLonAltToScene(data.latitude, data.longitude, data.altitude);
